@@ -1,11 +1,3 @@
-/*
-COMMANDS
-
-rust_project_one_port_sniffer.exe -h
-rust_project_one_port_sniffer.exe -j 100 192.168.1.1
-rust_project_one_port_sniffer.exe 192.168.1.1
-*/
-
 use std::env;
 use std::io::{self, Write};
 use std::net::{IpAddr, TcpStream};
@@ -17,7 +9,6 @@ use std::thread;
 const MAX: u16 = 65535;
 
 struct Arguments {
-    flag: String,
     ipaddr: IpAddr,
     threads: u16,
 }
@@ -31,7 +22,7 @@ impl Arguments {
         }
         let f = args[1].clone(); 
         if let Ok(ipaddr) = IpAddr::from_str(&f) {
-            return Ok(Arguments {flag: String::from(""), ipaddr, threads: 4})
+            return Ok(Arguments { ipaddr, threads: 4})
         } else {
             let flag = args[1].clone();
             if flag.contains("-h") || flag.contains("-help") && args.len() == 2 {
@@ -49,7 +40,7 @@ impl Arguments {
                     Ok(s) => s,
                     Err(_) => return Err("failed to parse thread number")
                 };
-                return Ok(Arguments{threads, flag, ipaddr});
+                return Ok(Arguments{threads, ipaddr});
             } else {
                 return Err("invalid syntax");
             }
